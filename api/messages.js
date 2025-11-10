@@ -45,11 +45,6 @@ export const messages = {
                 <p>If at any point you feel like you need some assistance, you can find our contact details by pressing the question mark in the top right corner. We are happy to help.</p>`
             ];
         },
-        end_message: {
-            message: `<p>Thank you for completing this session!</p>
-                <p>Please call the experimenter.</p>`,
-            on_start: endExperiment
-        },
         break_message: {
             message: `<p>You can now take a short break.</p><p>Please ring the bell when you are ready to continue.</p>`,
             key_forward: 'c',
@@ -69,12 +64,11 @@ export const messages = {
             <br><p>It is perfectly natural to take a bit longer when you are learning something new. However, if you see this message a few times, it may be a sign that you are overthinking your choices.</p>
             <p>If at any point you feel like you need some assistance, you can find our contact details by pressing the question mark in the top right corner. We are happy to help.</p>`
         ],
-        end_message:  {
-            message: 
-                `<p>Thank you for completing this module!</p>
-                <p>When you click next, your data will be uploaded to the secure server. This may take up to two minutes. Please don't close or refresh your browser at this time.</p>`,
-            on_finish: endExperiment
-        }
+        end_message: {
+            message: `<p>Thank you for completing this session!</p>
+                <p>Please call the experimenter.</p>`,
+            on_start: endExperiment
+        },
     }
 }
 
