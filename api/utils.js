@@ -227,21 +227,46 @@ export async function createModuleTimeline(moduleName, config) {
         }
     });
 
-    // Create timeline for each element in the module
-    const timelines = module.elements.map(element => {
-        if (element.type === "task") {
-            return createTaskTimeline(element.name, { ...module.moduleConfig, ...element.config, ...config });
-        }
-        if (element.type === "instructions") {
-            return getMessage(moduleName, element.config.text, { ...module.moduleConfig, ...element.config, ...config });
-        }
-        if (element.type === "bonus") {
-            return bonusTrial(module);
-        }
-        return null;
-    });
+    // Build timelines sequentially so we can surface exactly which module element failed.
+    const result = [];
+    const mergedConfig = { ...module.moduleConfig, ...config };
 
-    const result = await Promise.all(timelines);
+    for (let i = 0; i < module.elements.length; i++) {
+        const element = module.elements[i];
+
+        try {
+            if (element.type === "task") {
+                const taskTimeline = await createTaskTimeline(element.name, { ...mergedConfig, ...element.config });
+                result.push(taskTimeline);
+                continue;
+            }
+
+            if (element.type === "instructions") {
+                const instructionTrial = getMessage(moduleName, element.config.text, { ...mergedConfig, ...element.config });
+                if (instructionTrial) {
+                    result.push(instructionTrial);
+                } else {
+                    console.warn(`Skipping missing instruction \"${element.config.text}\" for module \"${moduleName}\".`);
+                }
+                continue;
+            }
+
+            if (element.type === "bonus") {
+                result.push(bonusTrial(module));
+                continue;
+            }
+
+            result.push(null);
+        } catch (error) {
+            const elementLabel = element.type === "task"
+                ? `task \"${element.name}\"`
+                : `element type \"${element.type}\"`;
+            throw new Error(
+                `Error while building module \"${moduleName}\" at element ${i + 1}/${module.elements.length} (${elementLabel}): ${error.message}`
+            );
+        }
+    }
+
     return result.flat();
 }
 
