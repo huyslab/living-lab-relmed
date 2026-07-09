@@ -15,7 +15,7 @@ export const ModuleRegistry = {
             { type: "task", name: "max_press_test" },
             { type: "task", name: "vigour" },
             { type: "task", name: "acceptability_judgment", config: { task_name: "vigour", game_description: "piggy-bank game" } },
-            { type: "bonus" },
+            { type: "instructions", config: { text: "end_message" } }
         ],
         max_bonus: 5.0,
         min_prop_bonus: 0.6

@@ -44,6 +44,11 @@ export const messages = {
                 <br><p>It is perfectly natural to take a bit longer when you are learning something new. However, if you see this message a few times, it may be a sign that you are overthinking your choices.</p>
                 <p>If at any point you feel like you need some assistance, you can find our contact details by pressing the question mark in the top right corner. We are happy to help.</p>`
             ];
+        },
+        end_message: {
+            message: `<p>Thank you for completing today's tasks.</p>
+                <p>Please let the research team know that you have finished.</p>`,
+            on_start: endExperiment
         }
     },
     full_battery: {
